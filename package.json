@@ -1,0 +1,39 @@
+{
+  "name": "aware-ui-prototype2",
+  "version": "1.0.0",
+  "description": "Next Generation Smart User Interface",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc -p src -w",
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaknuces/AwareUI-Prototype2.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "FireBase",
+    "Aware"
+  ],
+  "author": "Owais Zahid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaknuces/AwareUI-Prototype2/issues"
+  },
+  "homepage": "https://github.com/zaknuces/AwareUI-Prototype2#readme",
+  "dependencies": {
+    "angular2": "2.0.0-beta.7",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.3",
+    "firebase-angular2": "^0.7.2",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "systemjs": "0.19.22",
+    "zone.js": "0.5.15"
+  },
+  "devDependencies": {
+    "live-server": "0.9.2",
+    "typescript": "^1.8.2"
+  }
+}
