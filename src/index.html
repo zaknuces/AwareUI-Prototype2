@@ -1,5 +1,8 @@
 <html>
 	<head>
+		<!-- Set the base href -->
+    <base href="src">
+
 		<title>Aware User Interface</title>
 		<script src="../node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="../node_modules/systemjs/dist/system-polyfills.js"></script>
@@ -9,6 +12,12 @@
     <script src="../node_modules/rxjs/bundles/Rx.js"></script>
     <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
 		<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+
+		<!-- Add the router library -->
+    <script src="../node_modules/angular2/bundles/router.dev.js"></script>
+
+		<script src="../node_modules/tracking/build/tracking-min.js"></script>
+  	<script src="../node_modules/tracking/build/data/face-min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
 		<script>
@@ -26,7 +35,27 @@
 		</script>
 	</head>
 	<body>
-		<h2>Hello Fossasia</h2>
 		<my-app></my-app>
+
+		<!--<div class="demo-frame">
+	    <div class="demo-container">
+	      <video id="video" width="320" height="240" preload autoplay loop muted></video>
+	    </div>
+  	</div>-->
+
+		<!--<script>
+	    window.onload = function() {
+	      var video = document.getElementById('video');
+	      var tracker = new tracking.ObjectTracker('face');
+	      tracker.setInitialScale(4);
+	      tracker.setStepSize(2);
+	      tracker.setEdgesDensity(0.1);
+	      tracking.track('#video', tracker, { camera: true });
+	      tracker.on('track', function(event) {
+					var peopleCount = event.data.length;
+					console.log("Number of People " + peopleCount);
+	      });
+	    };
+	  </script>-->
 	</body>
 </html>

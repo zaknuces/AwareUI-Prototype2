@@ -7,81 +7,54 @@
  */
 import {
   Component,
-  View,
   provide
 } from "angular2/core";
 
 import {
-  NgClass
-} from "angular2/common";
-
-import {
-  Http,
-  HTTP_PROVIDERS
-} from 'angular2/http';
-
-import {
-  FirebaseService
-} from 'firebase-angular2/core';
+  RouteConfig,
+  ROUTER_DIRECTIVES,
+  ROUTER_PROVIDERS
+} from 'angular2/router';
 
 import {
   bootstrap
 } from 'angular2/platform/browser';
 
 import {
+  FirebaseService
+} from 'firebase-angular2/core';
+
+import {
   Settings
 } from './settings';
 
-declare var Firebase;
+import {
+  Demo1
+} from './demo1';
+
+import {
+  Demo2
+} from './demo2';
 
 @Component({
   selector: 'my-app',
-  viewProviders: [HTTP_PROVIDERS]
-})
-
-@View({
-  directives: [NgClass],
   template: `
-    <div class='main-container' [ngClass]='{
-        "low-temp-night": isDay === false && currentAmbientTemperature < TEMP_MEDIAN,
-        "high-temp-night": isDay === false && currentAmbientTemperature >= TEMP_MEDIAN,
-        "low-temp-day": isDay === true && currentAmbientTemperature < TEMP_MEDIAN,
-        "high-temp-day": isDay === true && currentAmbientTemperature >= TEMP_MEDIAN
-      }'>
-      Test App. TODO:
-    </div>
-  `
+    <h1>Component Router</h1>
+    <nav>
+      <a [routerLink]="['Demo1']">Demo 1</a>
+      <a [routerLink]="['Demo2']">Demo 2</a>
+    </nav>
+    <router-outlet></router-outlet>
+  `,
+  directives: [ROUTER_DIRECTIVES]
 })
+@RouteConfig([
+  {path:'demo1', name: 'Demo1', component: Demo1},
+  {path:'demo2', name: 'Demo2', component: Demo2}
+])
+class AppComponent { }
 
-class AppComponent {
-  currentAmbientTemperature: Number;
-  isDay: Boolean = false;
-  TEMP_MEDIAN: Number = 25;
-
-  constructor(private firebaseService:FirebaseService, private http: Http) {
-    firebaseService.firebase.auth(Settings.ACCESS_TOKEN);
-
-    firebaseService.firebase.child('devices/thermostats').on('value', (snapshot) => {
-      let termostat = ((obj) => {
-        for(let key in obj) {
-          return obj[key];
-        }
-      }) (snapshot.val());
-
-      this.currentAmbientTemperature = termostat.ambient_temperature_c;
-    });
-
-    http.get(Settings.WEATHER_SERVICE)
-      .map((response) => response.json())
-      .subscribe((json) => {
-        console.log(json);
-        let currentDate = new Date();
-        let sunrise = new Date(json.sys.sunrise * 1000);
-        let sunset = new Date(json.sys.sunset * 1000);
-        this.isDay = currentDate > sunrise && currentDate < sunset;
-      });
-  }
-}
 bootstrap(AppComponent, [
+  ROUTER_PROVIDERS,
   provide(FirebaseService, {useFactory: () => new FirebaseService(new Firebase(Settings.NEST_SERVICE))})
 ]);
