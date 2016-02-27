@@ -12,59 +12,76 @@ import {
 } from "angular2/core";
 
 import {
+  NgClass
+} from "angular2/common";
+
+import {
+  Http,
+  HTTP_PROVIDERS
+} from 'angular2/http';
+
+import {
   FirebaseService
 } from 'firebase-angular2/core';
 
 import {
   bootstrap
-} from 'angular2/platform/browser'
+} from 'angular2/platform/browser';
+
+import {
+  Settings
+} from './settings';
 
 declare var Firebase;
 
 @Component({
-  selector: 'my-app'  // Selector provides flexibility and the concept is similar to CSS selectors, XPath or JQuery selector. More on this in later tutorials.
+  selector: 'my-app',
+  viewProviders: [HTTP_PROVIDERS]
 })
 
-// Use @View Annotation to indicate that the component has a view. Note: If we are using syntatic sugar then you can define template in the component annotation as well.
 @View({
-  // Unlike Angular 1, not every directive is available in the context. We need to declare the once we will be using in the template.
-  directives: [],
+  directives: [NgClass],
   template: `
-    <div class='main-container'>
+    <div class='main-container' [ngClass]='{
+        "low-temp-night": isDay === false && currentAmbientTemperature < TEMP_MEDIAN,
+        "high-temp-night": isDay === false && currentAmbientTemperature >= TEMP_MEDIAN,
+        "low-temp-day": isDay === true && currentAmbientTemperature < TEMP_MEDIAN,
+        "high-temp-day": isDay === true && currentAmbientTemperature >= TEMP_MEDIAN
+      }'>
       Test App. TODO:
     </div>
   `
 })
 
-// Class will provide the meaning to the component. The properties of the class can be used in the template. Class will be
-// used to interact with other components and services.
 class AppComponent {
-  constructor(private firebaseService:FirebaseService) {
-    firebaseService.firebase.
-      auth("c.rhwDbBU2H28i7VbxEvJYQLHMROaalsHlDLz2XrGw5vs3gDkEz7Ngxu5D78kK9GA4ADAk46E811UBrHp8ZhWOcZPHdQ1sesiqNARENePxMSypdpKC6Mz1ksiCsONcrpq4oJOxg1bbYYx01g8n");
+  currentAmbientTemperature: Number;
+  isDay: Boolean = false;
+  TEMP_MEDIAN: Number = 25;
 
-    /*firebaseService.firebase.on('value', (snapshot) => {
-      var data = snapshot.val();
-
-      var structure = this.firstChild(data.structures);
-      var thermostate = data.devices.thermostats[structure.thermostats[0]];
-
-      console.log(structure, thermostate);
-    });*/
+  constructor(private firebaseService:FirebaseService, private http: Http) {
+    firebaseService.firebase.auth(Settings.ACCESS_TOKEN);
 
     firebaseService.firebase.child('devices/thermostats').on('value', (snapshot) => {
-      console.log(snapshot.val());
-    })
-  }
+      let termostat = ((obj) => {
+        for(let key in obj) {
+          return obj[key];
+        }
+      }) (snapshot.val());
 
-  firstChild(object) {
-    for(var key in object) {
-      return object[key];
-    }
+      this.currentAmbientTemperature = termostat.ambient_temperature_c;
+    });
+
+    http.get(Settings.WEATHER_SERVICE)
+      .map((response) => response.json())
+      .subscribe((json) => {
+        console.log(json);
+        let currentDate = new Date();
+        let sunrise = new Date(json.sys.sunrise * 1000);
+        let sunset = new Date(json.sys.sunset * 1000);
+        this.isDay = currentDate > sunrise && currentDate < sunset;
+      });
   }
 }
-
-// Use this function to Bootstrap or Loading a new component at the root level of the application.
 bootstrap(AppComponent, [
-  provide(FirebaseService, {useFactory: () => new FirebaseService(new Firebase('wss://developer-api.nest.com'))})
+  provide(FirebaseService, {useFactory: () => new FirebaseService(new Firebase(Settings.NEST_SERVICE))})
 ]);

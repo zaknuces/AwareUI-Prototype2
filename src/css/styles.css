@@ -1,0 +1,23 @@
+body {
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.main-container {
+	display: table-row;
+}
+
+.main-container.low-temp-night {
+  background-color: orange
+}
+
+.main-container.high-temp-night {
+  background-color: yellow
+}
+
+.main-container.low-temp-day {
+  background-color: blue;
+}
+
+.main-container.high-temp-day {
+  background-color: lightblue
+}
