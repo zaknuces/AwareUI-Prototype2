@@ -4,6 +4,13 @@
     <base href="src">
 
 		<title>Aware User Interface</title>
+
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css">
+
+		<link rel="stylesheet" href="../node_modules/ng2-material/dist/ng2-material.css">
+		<link rel="stylesheet" href="../node_modules/ng2-material/dist/font.css">
+
 		<script src="../node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="../node_modules/systemjs/dist/system-polyfills.js"></script>
 
@@ -13,11 +20,14 @@
     <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
 		<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
 
+		<script src="../node_modules/ng2-material/all.js"></script>
+
 		<!-- Add the router library -->
     <script src="../node_modules/angular2/bundles/router.dev.js"></script>
 
 		<script src="../node_modules/tracking/build/tracking-min.js"></script>
   	<script src="../node_modules/tracking/build/data/face-min.js"></script>
+		<script src="../node_modules/tracking/build/data/eye.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
 		<script>
@@ -28,7 +38,8 @@
 			    'firebase-angular2': '/node_modules/firebase-angular2'
 			  },paths: {
 						'angular2/*': '/node_modules/angular2/*.js',
-						'rxjs/*': '/node_modules/rxjs/*.js'
+						'rxjs/*': '/node_modules/rxjs/*.js',
+						'ng2-material/*': '/node_modules/ng2-material/*.js'
 				}
 			});
 			System.import('scripts/app');

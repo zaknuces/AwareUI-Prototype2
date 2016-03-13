@@ -6,15 +6,16 @@
  * This is a simple application for Nest home network that uses firebase.
  */
 import {
-  Component,
-  provide
-} from "angular2/core";
+  MATERIAL_DIRECTIVES,
+  MATERIAL_PROVIDERS
+} from "ng2-material/all";
 
 import {
-  RouteConfig,
-  ROUTER_DIRECTIVES,
-  ROUTER_PROVIDERS
-} from 'angular2/router';
+  Component,
+  provide,
+  Input,
+  ViewEncapsulation
+} from "angular2/core";
 
 import {
   bootstrap
@@ -29,32 +30,45 @@ import {
 } from './settings';
 
 import {
-  Demo1
-} from './demo1';
+  EnvironmentDemo
+} from './environmentDemo';
 
 import {
-  Demo2
-} from './demo2';
+  SurroundingDemo
+} from './surroundingDemo';
 
 @Component({
   selector: 'my-app',
   template: `
-    <h1>Component Router</h1>
-    <nav>
-      <a [routerLink]="['Demo1']">Demo 1</a>
-      <a [routerLink]="['Demo2']">Demo 2</a>
-    </nav>
-    <router-outlet></router-outlet>
+    <md-content>
+      <md-toolbar>
+        <h2 class="app-header">
+          <span>FOSSASIA Demo: Aware User Interface</span>
+        </h2>
+      </md-toolbar>
+      <div class="demo-tabs">
+        <md-tabs md-dynamic-height md-border-bottom>
+          <template md-tab label="Environment Aware">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Environment Aware</h1>
+              <environment-demo></environment-demo>
+            </md-content>
+          </template>
+          <template md-tab label="Surrounding Aware">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Surrounding Aware</h1>
+              <surrounding-demo></surrounding-demo>
+            </md-content>
+          </template>
+        </md-tabs>
+      </div>
+    </md-content>
   `,
-  directives: [ROUTER_DIRECTIVES]
+  directives: [MATERIAL_DIRECTIVES, EnvironmentDemo, SurroundingDemo]
 })
-@RouteConfig([
-  {path:'demo1', name: 'Demo1', component: Demo1},
-  {path:'demo2', name: 'Demo2', component: Demo2}
-])
+
 class AppComponent { }
 
 bootstrap(AppComponent, [
-  ROUTER_PROVIDERS,
   provide(FirebaseService, {useFactory: () => new FirebaseService(new Firebase(Settings.NEST_SERVICE))})
 ]);
