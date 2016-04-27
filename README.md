@@ -12,7 +12,7 @@ This prototype is created using [Angular 2](https://angular.io/), [TrackingJS](h
 See the prototype in action.
 
 ## Contribute & Develop
-The contribution guideline coming soon.
+See [CONTRIBUTION.MD](https://github.com/zaknuces/AwareUI-Prototype2/blob/master/CONTRIBUTING.md)
 
 ## RoadMap
 Planning a beta release by Aug, 2016. Following are plans for the first beta release.
